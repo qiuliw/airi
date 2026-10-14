@@ -60,6 +60,24 @@ describe('migrated provider definitions', () => {
     }
   })
 
+  // ROOT CAUSE:
+  //
+  // The catalogue's free/local filter drops providers whose metadata has no
+  // pricing or deployment, so unlisted hearing-only providers only showed up
+  // under "all".
+  //
+  // We fixed this by listing them in the provider attributes table.
+  // https://github.com/moeru-ai/airi/issues/2976
+  it('categorizes the hearing-only providers as free and local (Issue #2976)', async () => {
+    const t = ((key: string) => key) as ComposerTranslation
+
+    for (const id of ['sherpaw-transcription', 'apple-speech-transcription']) {
+      const metadata = await selectProviderMetadata(getRequiredProvider(id), t)
+      expect(metadata.pricing, id).toBe('free')
+      expect(metadata.deployment, id).toBe('local')
+    }
+  })
+
   it('exposes a closed provider id union to stage-ui consumers', () => {
     expectTypeOf<'openai'>().toExtend<StageProviderId>()
     expectTypeOf<'official-provider'>().toExtend<StageProviderId>()
