@@ -51,6 +51,7 @@ jobs:
     env:
       VITE_ENABLE_ANALYTICS: ${{ ((github.event_name == 'release') || (github.event_name == 'workflow_dispatch' && !inputs.build_only)) && 'true' || 'false' }}
     strategy:
+      fail-fast: false
       matrix:
         include:
 
