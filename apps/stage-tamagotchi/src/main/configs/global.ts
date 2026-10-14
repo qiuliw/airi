@@ -7,9 +7,16 @@ const shortcutAcceleratorSchema = object({
   key: string(),
 })
 
+const proxyConfigSchema = object({
+  enabled: boolean(),
+  host: string(),
+  port: string(),
+})
+
 export const globalAppConfigSchema = object({
   hideAppIcon: optional(boolean()),
   language: optional(string()),
+  proxy: optional(proxyConfigSchema),
   spotlightShortcutAccelerator: optional(shortcutAcceleratorSchema),
   updateChannel: optional(picklist(['latest', 'stable', 'alpha', 'beta', 'nightly', 'canary'])),
 })

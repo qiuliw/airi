@@ -33,6 +33,16 @@ pages:
         description: 仅保留托盘图标，通过托盘菜单打开窗口或退出应用。修改立即生效。
         load-error: 无法加载应用图标设置。
         save-error: 无法更新应用图标设置。
+      proxy:
+        title: 网络代理
+        description: 通过 HTTP 代理转发应用的网络下载，适用于模型下载无法直连的环境。沙箱安装无法跟随系统代理。
+        enabled: 使用代理
+        host: 主机
+        port: 端口
+        apply: 应用代理
+        saved: 代理设置已应用。
+        load-error: 无法加载代理设置。
+        save-error: 无法应用代理设置。
     sections:
       section:
         window-shortcuts:

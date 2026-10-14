@@ -46,6 +46,7 @@ import { setupAutoUpdater } from './services/electron/auto-updater'
 import { setupSherpawModelAssetsProtocol } from './services/electron/bundled-sherpaw-assets'
 import { setupGlobalShortcutService } from './services/electron/global-shortcut'
 import { setupPermissionHandlers } from './services/electron/media-permissions'
+import { createProxyService } from './services/electron/proxy'
 import { setupSherpawModelAssets } from './services/electron/sherpaw-model-assets'
 import { setupTray } from './tray'
 import { setupAboutWindowReusable } from './windows/about'
@@ -189,6 +190,10 @@ app.whenReady().then(async () => {
   const appConfig = injeca.provide('configs:app', () => createGlobalAppConfig())
   const artistryConfig = injeca.provide('configs:artistry', () => createArtistryConfig())
   const ioTraceRecordingConfig = injeca.provide('configs:io-trace-recording', () => createIOTraceRecordingConfig())
+  const proxyService = injeca.provide('services:proxy', {
+    dependsOn: { appConfig },
+    build: ({ dependsOn }) => createProxyService({ config: dependsOn.appConfig }),
+  })
   const electronApp = injeca.provide('host:electron:app', () => app)
   const autoUpdater = injeca.provide('services:auto-updater', {
     dependsOn: { appConfig },
@@ -380,7 +385,7 @@ app.whenReady().then(async () => {
   }
 
   injeca.invoke({
-    dependsOn: { mainWindow, tray, serverChannel, airiHttpServer, godotStageManager, pluginHost, mcpManager, onboardingWindow: onboardingWindowManager, widgetsWindow: widgetsManager, spotlightWindow, artistryConfig },
+    dependsOn: { mainWindow, tray, serverChannel, airiHttpServer, godotStageManager, pluginHost, mcpManager, onboardingWindow: onboardingWindowManager, widgetsWindow: widgetsManager, spotlightWindow, artistryConfig, proxyService },
     callback: async (deps) => {
       const { context } = createContext(ipcMain)
       setupComputerUse(context)

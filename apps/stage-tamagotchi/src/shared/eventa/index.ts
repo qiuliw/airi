@@ -510,6 +510,14 @@ export const electronAppIsWayland = defineInvokeEventa<boolean>('eventa:invoke:e
 export const electronAppIconGet = defineInvokeEventa<boolean>('eventa:invoke:electron:app-icon:get')
 export const electronAppIconSet = defineInvokeEventa<boolean, boolean>('eventa:invoke:electron:app-icon:set')
 
+export interface ElectronProxyConfig {
+  enabled: boolean
+  host: string
+  port: string
+}
+export const electronProxyConfigGet = defineInvokeEventa<ElectronProxyConfig | undefined>('eventa:invoke:electron:proxy-config:get')
+export const electronProxyConfigSet = defineInvokeEventa<void, ElectronProxyConfig>('eventa:invoke:electron:proxy-config:set')
+
 export type ElectronGodotStageState = 'stopped' | 'starting' | 'running' | 'stopping' | 'error'
 
 /**

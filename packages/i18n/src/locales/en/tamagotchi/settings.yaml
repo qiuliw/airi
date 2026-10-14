@@ -33,6 +33,16 @@ pages:
         description: Keep AIRI in the tray only. Use the tray menu to open windows or quit. Changes apply immediately.
         load-error: Failed to load the app icon setting.
         save-error: Failed to update the app icon setting.
+      proxy:
+        title: Network proxy
+        description: Route app downloads through an HTTP proxy, for environments where model downloads are unreachable directly. Sandboxed installs cannot follow the system proxy.
+        enabled: Use a proxy
+        host: Host
+        port: Port
+        apply: Apply proxy
+        saved: Proxy settings applied.
+        load-error: Failed to load the proxy settings.
+        save-error: Failed to apply the proxy settings.
     sections:
       section:
         window-shortcuts:
