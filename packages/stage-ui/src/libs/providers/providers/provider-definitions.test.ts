@@ -1,10 +1,12 @@
 import type { ProviderTranslator } from '@proj-airi/provider-inference'
+import type { ComposerTranslation } from 'vue-i18n'
 
 import type { StageProviderId } from './registry'
 
 import { describe, expect, expectTypeOf, it } from 'vitest'
 import { z } from 'zod'
 
+import { selectProviderMetadata } from '../metadata'
 import { providerAliyunNlsTranscription } from './aliyun-nls'
 import {
   providerAppLocalAudioSpeech,
@@ -39,6 +41,23 @@ describe('migrated provider definitions', () => {
   // https://github.com/moeru-ai/airi/issues/2297
   it('hides the browser local transcription provider until its settings page exists (Issue #2297)', async () => {
     expect(await providerBrowserLocalAudioTranscription.isAvailableBy?.()).toBe(false)
+  })
+
+  // ROOT CAUSE:
+  //
+  // Hearing-only providers keep no page file: their settings mount as a
+  // `hearing` view on the Hearing transcriber page, so their card's default
+  // category route has no component and blanked the Settings window.
+  //
+  // We fixed this by declaring the card destination via `to`.
+  // https://github.com/moeru-ai/airi/issues/2976
+  it('routes hearing-only providers to the Hearing transcriber settings (Issue #2976)', async () => {
+    const t = ((key: string) => key) as ComposerTranslation
+
+    for (const id of ['sherpaw-transcription', 'apple-speech-transcription']) {
+      const metadata = await selectProviderMetadata(getRequiredProvider(id), t)
+      expect(metadata.to, id).toBe('/settings/modules/hearing/transcriber')
+    }
   })
 
   it('exposes a closed provider id union to stage-ui consumers', () => {

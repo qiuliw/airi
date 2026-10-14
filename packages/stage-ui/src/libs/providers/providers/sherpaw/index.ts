@@ -28,6 +28,7 @@ export const providerSherpawTranscription = defineProvider({
     getInterfaceLanguage,
     isMobile,
   }),
+  to: '/settings/modules/hearing/transcriber',
   views: {
     hearing: () => import('./hearing-settings.vue'),
   },

@@ -10,6 +10,8 @@ import type { ProviderViews } from './views'
 export interface ProviderDefinition<TConfig = Record<string, unknown>, TId extends string = string> extends CoreProviderDefinition<TConfig, TId> {
   /** Optional stage-ui views for this Provider. */
   views?: ProviderViews
+  /** Card destination for providers whose settings live outside their category page. */
+  to?: string
 }
 
 export {
